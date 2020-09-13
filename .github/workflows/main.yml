@@ -79,12 +79,8 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: "14.x"
-      - name: Install Dependencies
-        run: npm install
       - name: Run Front-End Tests
-        run: npm test
-        env:
-          CI: true
+        uses: ./.github/actions/run_tests
 
   build:
     if: (github.event_name == 'pull_request' || contains(github.ref, 'tags') || contains(github.ref, 'master')) && github.event_name != 'workflow_dispatch'
@@ -102,10 +98,13 @@ jobs:
           node-version: "14.x"
       - name: Run Front-End Tests
         uses: ./.github/actions/run_tests
-      - name: Build Project
-        run: |
-          cd frontend
-          npm run build
+      - name: Tests have failed
+        if: ${{ failure() }}
+        run: git status
+      # - name: Build Project
+      #   run: |
+      #     cd frontend
+      #     npm run build
 
   # build:
   #   if: (github.event_name == 'pull_request' || contains(github.ref, 'tags') || contains(github.ref, 'master')) && github.event_name != 'workflow_dispatch'

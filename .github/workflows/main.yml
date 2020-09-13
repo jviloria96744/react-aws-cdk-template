@@ -12,7 +12,7 @@ on:
       - "aws-cdk/app.py"
       - "aws-cdk/set_env_vars.sh"
       - "src/frontend/**"
-      - ".github/workflows/main.yml" # Uncomment to test pipeline changes
+      - ".github/**" # Uncomment to test pipeline changes
 
   workflow_dispatch:
     inputs:

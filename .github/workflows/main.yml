@@ -82,10 +82,12 @@ jobs:
       - name: Install Dependencies
         run: npm install
       - name: Run Front-End Tests
-        uses: ./.github/actions/run_tests
+        uses: ./.github/actions/run-tests
 
   build:
     if: (github.event_name == 'pull_request' || contains(github.ref, 'tags') || contains(github.ref, 'master')) && github.event_name != 'workflow_dispatch'
+    env:
+      DOMAIN: ${{ secrets.AWS_DOMAIN_NAME }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
@@ -101,7 +103,7 @@ jobs:
         with:
           node-version: "14.x"
       - name: Run Front-End Tests
-        uses: ./.github/actions/run_tests
+        uses: ./.github/actions/run-tests
       # - name: Revert on failed test for push to master
       #   if: ${{ failure() }} && github.event_name != 'pull_request'
       #   run: |
@@ -122,6 +124,11 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
+      - name: Create and Deploy AWS Resources
+        uses: ./.github/actions/create-stacks
+        with:
+          deployment-environment: ${{ env.ENVIRONMENT }}
+          custom-domain: ${{ env.DOMAIN }}
       # - name: Build Project
       #   run: |
       #     cd frontend

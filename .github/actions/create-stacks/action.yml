@@ -1,0 +1,44 @@
+name: "Create AWS Stacks"
+description: "Provision AWS Resources, Cert, S3 Buckets, CloudFront Distributions, etc."
+
+inputs:
+  deployment-environment:
+    description: "Deployment Environment"
+    required: true
+    default: "dev"
+  custom-domain:
+    description: "Domain name to deploy to"
+    required: true
+    default: "my-domain.com"
+
+runs:
+  using: "composite"
+  steps:
+    - name: Input Test
+      run: |
+        echo "${{ inputs.deployment-environment }}"
+        echo "${{ inputs.custom-domain }}"
+    # - uses: actions/setup-python@v2
+    #   with:
+    #     python-version: "3.8"
+    # - name: Install Dependencies
+    #   run: |
+    #     cd aws-cdk
+    #     npm install -g aws-cdk@1.62.0
+    #     pip3 install -r requirements.txt
+    #     sudo apt install jq
+    #   shell: bash
+    # - name: Create Certificate Stack
+    #   run: |
+    #     cd aws-cdk
+    #     cdk ls -c environment=${{ inputs.deployment-environment }} -c domain="${{ inputs.custom-domain }}" -c certificate_arn="Dummy Value"
+    #   shell: bash
+    # - name: Deploy Certificate Stack
+    #   run: |
+    #     cd aws-cdk
+    #     cdk deploy CertificateStack -c environment=${{ inputs.deployment-environment }} -c domain="${{ inputs.custom-domain }}" -c certificate_arn="Dummy Name" --require-approval "never" --outputs-file cdk-deploy-output.json
+    #     echo "::set-env name=CERT_ARN::$(jq .CertificateStack.certificate-arn cdk-deploy-output.json)"
+    #   shell: bash
+    # - name: Test Output
+    #   run: echo "$CERT_ARN"
+    #   shell: bash

@@ -11,7 +11,7 @@ on:
       - "aws-cdk/artifact_stack/**"
       - "aws-cdk/app.py"
       - "aws-cdk/set_env_vars.sh"
-      - "src/frontend/**"
+      - "frontend/src/**"
       - ".github/**" # Uncomment to test pipeline changes
 
   workflow_dispatch:

@@ -4,8 +4,11 @@ description: "Setting deployment environment variable based on event type (push 
 runs:
   using: "composite"
   steps:
+    - name: test github env variables
+      run: echo "github.ref"
+      shell: bash
     - name: Set ENVIRONMENT to dev
-      if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
+      # if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
       run: echo "::set-env name=ENVIRONMENT::dev"
       shell: bash
     # if: contains(github.ref, 'tags')

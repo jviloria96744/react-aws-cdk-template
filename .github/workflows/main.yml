@@ -90,8 +90,15 @@ jobs:
     if: (github.event_name == 'pull_request' || contains(github.ref, 'tags') || contains(github.ref, 'master')) && github.event_name != 'workflow_dispatch'
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v2
+      - name: Set env to dev
+        if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
+        run: echo "::set-env name=ENVIRONMENT::dev"
+      - name: Set env to stg and set release version from tag
+        if: contains(github.ref, 'tags')
+        run: echo "::set-env name=ENVIRONMENT::stg" && echo "::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})"
       - name: Test
-        run: echo "Test"
+        run: echo $ENVIRONMENT
 
   # build:
   #   if: (github.event_name == 'pull_request' || contains(github.ref, 'tags') || contains(github.ref, 'master')) && github.event_name != 'workflow_dispatch'

@@ -102,6 +102,9 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: "14.x"
+      - uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
       # - name: Run Front-End Tests
       #   uses: ./.github/actions/run-tests
       # - name: Revert on failed test for push to master

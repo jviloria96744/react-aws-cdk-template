@@ -4,9 +4,6 @@ description: "Provision AWS Resources, Cert, S3 Buckets, CloudFront Distribution
 runs:
   using: "composite"
   steps:
-    - uses: actions/setup-python@v2
-      with:
-        python-version: "3.8"
     - name: Install Dependencies
       run: |
         cd aws-cdk

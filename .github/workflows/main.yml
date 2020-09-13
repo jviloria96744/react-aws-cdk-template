@@ -132,6 +132,8 @@ jobs:
         with:
           deployment-environment: ${{ env.ENVIRONMENT }}
           custom-domain: ${{ env.DOMAIN }}
+      - name: Test Output
+        run: echo $CERT_ARN
       # - name: Build Project
       #   run: |
       #     cd frontend

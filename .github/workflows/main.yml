@@ -106,7 +106,6 @@ jobs:
         if: ${{ failure() }}
         run: |
           git config user.name ${GITHUB_ACTOR}
-          git config user.email "myemail.com"
           git revert --no-edit HEAD
           cat frontend/src/App.test.js
       # - name: Build Project

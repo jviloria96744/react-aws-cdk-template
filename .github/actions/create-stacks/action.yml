@@ -20,7 +20,7 @@ runs:
       run: |
         cd aws-cdk
         cdk deploy CertificateStack -c environment=${{ env.ENVIRONMENT }} -c domain="${{ env.DOMAIN }}" -c certificate_arn="Dummy Name" --require-approval "never" --outputs-file cdk-deploy-output.json
-        echo "::set-env name=CERT_ARN::$(jq .CertificateStack.certificate-arn cdk-deploy-output.json)"
+        echo "::set-env name=CERT_ARN::$(jq .CertificateStack.certificatearn cdk-deploy-output.json)"
       shell: bash
     - name: Test Output
       run: echo "${{ env.CERT_ARN }}"

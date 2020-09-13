@@ -16,5 +16,5 @@ class CertificateStack(core.Stack):
                                      validation_method=cm.ValidationMethod.DNS
                                      )
 
-        core.CfnOutput(self, "certificate-arn",
+        core.CfnOutput(self, "certificatearn",
                        value=certificate.certificate_arn)

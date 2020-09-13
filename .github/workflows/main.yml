@@ -102,6 +102,10 @@ jobs:
           node-version: "14.x"
       - name: Run Front-End Tests
         uses: ./.github/actions/run_tests
+      - name: Build Project
+        run: |
+          cd frontend
+          npm run build
 
   # build:
   #   if: (github.event_name == 'pull_request' || contains(github.ref, 'tags') || contains(github.ref, 'master')) && github.event_name != 'workflow_dispatch'

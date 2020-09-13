@@ -13,3 +13,5 @@ runs:
       run: |
         cd frontend
         npm test
+      env:
+        CI: true

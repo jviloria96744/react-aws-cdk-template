@@ -13,5 +13,6 @@ runs:
       run: |
         cd frontend
         npm test
+      shell: bash
       env:
         CI: true

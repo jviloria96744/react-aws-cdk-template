@@ -15,8 +15,8 @@ setuptools.setup(
 
     author="author",
 
-    package_dir={"": "aws_cdk"},
-    packages=setuptools.find_packages(where="aws_cdk"),
+    package_dir={"": "static_site_stack"},
+    packages=setuptools.find_packages(where="static_site_stack"),
 
     install_requires=[
         "aws-cdk.core==1.62.0",
@@ -24,6 +24,7 @@ setuptools.setup(
         "aws-cdk.aws_cloudfront==1.62.0",
         "aws-cdk.aws_route53==1.62.0",
         "aws-cdk.aws_route53_targets==1.62.0",
+        "aws-cdk.aws_certificatemanager==1.62.0"
     ],
 
     python_requires=">=3.6",

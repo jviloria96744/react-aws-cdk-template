@@ -102,13 +102,26 @@ jobs:
           node-version: "14.x"
       - name: Run Front-End Tests
         uses: ./.github/actions/run_tests
-      - name: Failure Test
-        if: ${{ failure() }}
+      - name: Revert on failed test for push to master
+        if: ${{ failure() }} && github.event_name != 'pull_request'
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
           git revert --no-edit HEAD
           git push
+      - name: Revert on failed test for pull request into master
+        if: ${{ failure() }} && github.event_name == 'pull_request'
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git revert --no-edit -m 1 HEAD
+          git push
+      - name: Configure AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v1
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
       # - name: Build Project
       #   run: |
       #     cd frontend

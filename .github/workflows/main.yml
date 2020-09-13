@@ -91,12 +91,13 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set env to dev
-        if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
-        run: echo "::set-env name=ENVIRONMENT::dev"
-      - name: Set env to stg and set release version from tag
-        if: contains(github.ref, 'tags')
-        run: echo "::set-env name=ENVIRONMENT::stg" && echo "::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})"
+      - uses: ./.github/actions/set_environment
+        name: Set ENVIRONMENT Variable
+      #   if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
+      #   run: echo "::set-env name=ENVIRONMENT::dev"
+      # - name: Set env to stg and set release version from tag
+      #   if: contains(github.ref, 'tags')
+      #   run: echo "::set-env name=ENVIRONMENT::stg" && echo "::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})"
       - name: Test
         run: echo $ENVIRONMENT
 

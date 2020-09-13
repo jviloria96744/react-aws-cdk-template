@@ -102,8 +102,8 @@ jobs:
       - uses: actions/setup-node@v2-beta
         with:
           node-version: "14.x"
-      - name: Run Front-End Tests
-        uses: ./.github/actions/run-tests
+      # - name: Run Front-End Tests
+      #   uses: ./.github/actions/run-tests
       # - name: Revert on failed test for push to master
       #   if: ${{ failure() }} && github.event_name != 'pull_request'
       #   run: |

@@ -5,7 +5,7 @@ runs:
   using: "composite"
   steps:
     - name: test github env variables
-      run: echo $GITHUB_REF
+      run: echo "$GITHUB_REF"
       shell: bash
     - name: Set ENVIRONMENT to dev
       # if: contains(github.ref, 'master') || contains(github.base_ref, 'master')

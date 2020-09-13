@@ -90,7 +90,7 @@ jobs:
     steps:
       - uses: actions/checkout@v2
         with:
-          fetch-depth: 1
+          fetch-depth: 0
       - name: Set env to dev
         if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
         run: echo "::set-env name=ENVIRONMENT::dev"

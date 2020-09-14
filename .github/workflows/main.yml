@@ -105,6 +105,10 @@ jobs:
       - uses: actions/setup-python@v2
         with:
           python-version: "3.8"
+      - name: Install Dependencies
+        run: |
+          cd frontend
+          npm install
       # - name: Run Front-End Tests
       #   uses: ./.github/actions/run-tests
       # - name: Revert on failed test for push to master

@@ -4,11 +4,6 @@ description: "Run Unit Tests/Code Quality Checks/etc. on Front-End Code"
 runs:
   using: "composite"
   steps:
-    - name: Install Dependencies
-      run: |
-        cd frontend
-        npm install
-      shell: bash
     - name: Run Unit Tests
       run: |
         cd frontend

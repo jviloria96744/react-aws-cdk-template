@@ -60,7 +60,9 @@ jobs:
         with:
           node-version: "14.x"
       - name: Install Dependencies
-        run: npm install
+        run: |
+          cd frontend
+          npm install
       - name: Run Front-End Tests
         uses: ./.github/actions/run-tests
 

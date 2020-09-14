@@ -75,7 +75,9 @@ jobs:
           fetch-depth: 0
       - name: Set ENVIRONMENT variable
         run: |
-          if [ grep -q "master" <<< "${{github.ref}}" ] || [ grep -q "master" <<< "${{github.base_ref}}" ]; then 
+          if grep -q "master" <<< "${{github.ref}}"; then
+            echo echo "::set-env name=ENVIRONMENT::dev"
+          elif grep -q "master" <<< "${{github.base_ref}}"; then 
             echo echo "::set-env name=ENVIRONMENT::dev"
           elif grep -q "tags" <<< "${{github.ref}}"; then
             echo "::set-env name=ENVIRONMENT::stg" && echo "::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})"

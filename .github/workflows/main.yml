@@ -75,16 +75,17 @@ jobs:
           fetch-depth: 0
       - name: Set ENVIRONMENT variable
         run: |
-          if grep -q "master" <<< "${{github.ref}}"; then 
-            echo "Does this work?"
+          if [ grep -q "master" <<< "${{github.ref}}" ] || [ grep -q "master" <<< "${{github.base_ref}}" ]; then 
+            echo echo "::set-env name=ENVIRONMENT::dev"
+          elif grep -q "tags" <<< "${{github.ref}}"; then
+            echo "::set-env name=ENVIRONMENT::stg" && echo "::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})"
           fi
-          echo "Do I make it here"
-      - name: Set env to dev
-        if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
-        run: echo "::set-env name=ENVIRONMENT::dev"
-      - name: Set env to stg and set release version from tag
-        if: contains(github.ref, 'tags')
-        run: echo "::set-env name=ENVIRONMENT::stg" && echo "::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})"
+      # - name: Set env to dev
+      #   if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
+      #   run: echo "::set-env name=ENVIRONMENT::dev"
+      # - name: Set env to stg and set release version from tag
+      #   if: contains(github.ref, 'tags')
+      #   run: echo "::set-env name=ENVIRONMENT::stg" && echo "::set-env name=RELEASE_VERSION::$(echo ${GITHUB_REF:10})"
       - uses: actions/setup-node@v2-beta
         with:
           node-version: "14.x"

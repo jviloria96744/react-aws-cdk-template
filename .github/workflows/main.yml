@@ -75,7 +75,7 @@ jobs:
           fetch-depth: 0
       - name: Set ENVIRONMENT variable
         run: |
-          if [ "${{github.ref}}" = *"master"* ]; then 
+          if grep -q "master" <<< "${{github.ref}}"; then 
             echo "Does this work?"
           fi
           echo "Do I make it here"

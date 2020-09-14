@@ -9,9 +9,9 @@ runs:
         cd aws-cdk
         npm install -g aws-cdk@1.62.0
         pip3 install -r requirements.txt
-        sudo apt install jq
+        sudo apt-get install jq
       shell: bash
-    - name: Create Certificate Stack
+    - name: Create Stacks
       run: |
         cd aws-cdk
         cdk ls -c environment=${{ env.ENVIRONMENT }} -c domain="${{ env.DOMAIN }}" -c certificate_arn="Dummy Value"
@@ -22,6 +22,26 @@ runs:
         cdk deploy CertificateStack -c environment=${{ env.ENVIRONMENT }} -c domain="${{ env.DOMAIN }}" -c certificate_arn="Dummy Name" --require-approval "never" --outputs-file cdk-deploy-output.json
         echo "::set-env name=CERT_ARN::$(jq .CertificateStack.certificatearn cdk-deploy-output.json)"
       shell: bash
-    - name: Test Output
-      run: echo "${{ env.CERT_ARN }}"
+    - name: Deploy Artifact Stack
+      run: |
+        cd aws-cdk
+        cdk deploy ArtifactStack -c environment=${{ env.ENVIRONMENT }} -c domain="${{ env.DOMAIN }}" -c certificate_arn="Dummy Name" --require-approval "never" --outputs-file cdk-deploy-output.json
+        echo "::set-env name=ARTIFACT_BUCKET::$(jq .ArtifactStack.artifactbucketname cdk-deploy-output.json)"
+      shell: bash
+    - name: Deploy Static Site Stack
+      run: |
+        cd aws-cdk
+        cdk deploy "StaticSiteStack*" -c environment=${{ env.ENVIRONMENT }} -c domain="${{ env.DOMAIN }}" -c certificate_arn="${{ env.CERT_ARN }}" --require-approval "never" --outputs-file cdk-deploy-output.json
+      shell: bash
+    - name: Set Environment Variables
+      run: |
+        export FILE=cdk-deploy-output.json
+        export STACK=$(jq keys_unsorted[] $FILE) 
+
+        function remove_quotes {
+            echo $1 | tr -d '"'
+        }
+
+        echo "::set-env name=DIST_ID::$(remove_quotes $(jq .$STACK.distid $FILE))"
+        echo "::set-env name=BUCKET::$(remove_quotes $(jq .$STACK.sitebucketname $FILE))"
       shell: bash

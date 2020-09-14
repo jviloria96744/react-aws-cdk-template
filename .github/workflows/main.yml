@@ -129,13 +129,16 @@ jobs:
           aws-region: ${{ secrets.AWS_REGION }}
       - name: Create and Deploy AWS Resources
         uses: ./.github/actions/create-stacks
-      - name: Build Deployment Package
-        run: npm run build
-      - name: Deploy To S3 Bucket
-        run: aws s3 sync ./build s3://$BUCKET --delete
+      - name: Create Build & Deploy to S3 Bucket
+        run: |
+          cd frontend
+          npm run build
+          aws s3 sync ./build s3://$BUCKET --delete
       - name: Store Build In Artifact Bucket
         if: env.ENVIRONMENT == 'stg'
-        run: aws s3 sync ./build s3://$(echo $ARTIFACT_BUCKET | tr -d '"')/Release-$RELEASE_VERSION/ --delete
+        run: |
+          cd frontend
+          aws s3 sync ./build s3://$(echo $ARTIFACT_BUCKET | tr -d '"')/Release-$RELEASE_VERSION/ --delete
       - name: Invalidate CloudFront Cache
         if: env.ENVIRONMENT == 'stg'
         run: aws cloudfront create-invalidation --distribution-id $DIST_ID --paths "/*"

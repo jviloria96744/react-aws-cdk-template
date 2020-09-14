@@ -35,6 +35,7 @@ runs:
       shell: bash
     - name: Set Environment Variables
       run: |
+        cd aws-cdk
         export FILE=cdk-deploy-output.json
         export STACK=$(jq keys_unsorted[] $FILE) 
 

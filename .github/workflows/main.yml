@@ -13,7 +13,7 @@ on:
       - "aws-cdk/app.py"
       - "aws-cdk/set_env_vars.sh"
       - "frontend/src/**"
-      - ".github/**"
+      #- ".github/**" # Uncomment to test workflow changes
 
   workflow_dispatch:
     inputs:
@@ -94,17 +94,18 @@ jobs:
           npm install
       - name: Run Front-End Tests
         uses: ./.github/actions/run-tests
-      - name: Revert on failed test
-        if: failure()
-        run: |
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          if ${{ github.event_name }} != 'pull_request'; then
-            git revert --no-edit HEAD
-          else
-            git revert --no-edit -m 1 HEAD
-          fi
-          git push
+      # I leave this commented block as a VERY HEAVY-HANDED way of handling failed tests
+      # - name: Revert on failed test
+      #   if: failure()
+      #   run: |
+      #     git config user.name "github-actions[bot]"
+      #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+      #     if ${{ github.event_name }} != 'pull_request'; then
+      #       git revert --no-edit HEAD
+      #     else
+      #       git revert --no-edit -m 1 HEAD
+      #     fi
+      #     git push
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

@@ -75,9 +75,10 @@ jobs:
           fetch-depth: 0
       - name: Set ENVIRONMENT variable
         run: |
-          if [$(echo ${GITHUB_REF}) == *"master"*]; 
-          then echo "Does this work?";
+          if [$(echo ${GITHUB_REF}) = *"master"*]; then 
+            echo "Does this work?"
           fi
+          echo "Do I make it here"
       - name: Set env to dev
         if: contains(github.ref, 'master') || contains(github.base_ref, 'master')
         run: echo "::set-env name=ENVIRONMENT::dev"

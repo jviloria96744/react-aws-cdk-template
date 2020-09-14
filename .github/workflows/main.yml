@@ -75,7 +75,7 @@ jobs:
           fetch-depth: 0
       - name: Set ENVIRONMENT variable
         run: |
-          if [$(echo ${{github.ref}}) = *"master"*]; then 
+          if ["${{github.ref}}" = *"master"*]; then 
             echo "Does this work?"
           fi
           echo "Do I make it here"

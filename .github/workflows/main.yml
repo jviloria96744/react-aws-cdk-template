@@ -89,18 +89,20 @@ jobs:
         run: |
           cd frontend
           npm install
-      # - name: Run Front-End Tests
-      #   uses: ./.github/actions/run-tests
-      # - name: Revert on failed test for push to master
-      #   if: ${{ failure() }} && github.event_name != 'pull_request'
-      #   run: |
+      - name: Run Front-End Tests
+        uses: ./.github/actions/run-tests
+      - name: Revert on failed test for push to master
+        if: failure() && github.event_name != 'pull_request'
+        run: |
+          echo "master push failure"
       #     git config user.name "github-actions[bot]"
       #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       #     git revert --no-edit HEAD
       #     git push
-      # - name: Revert on failed test for pull request into master
-      #   if: ${{ failure() }} && github.event_name == 'pull_request'
-      #   run: |
+      - name: Revert on failed test for pull request into master
+        if: failure() && github.event_name == 'pull_request'
+        run: |
+          echo "pull request failure"
       #     git config user.name "github-actions[bot]"
       #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
       #     git revert --no-edit -m 1 HEAD

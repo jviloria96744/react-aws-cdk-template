@@ -92,22 +92,17 @@ jobs:
           npm install
       - name: Run Front-End Tests
         uses: ./.github/actions/run-tests
-      - name: Revert on failed test for push to master
-        if: failure() && github.event_name != 'pull_request'
+      - name: Revert on failed test
+        if: failure()
         run: |
-          echo "master push failure"
-      #     git config user.name "github-actions[bot]"
-      #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #     git revert --no-edit HEAD
-      #     git push
-      - name: Revert on failed test for pull request into master
-        if: failure() && github.event_name == 'pull_request'
-        run: |
-          echo "pull request failure"
-      #     git config user.name "github-actions[bot]"
-      #     git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-      #     git revert --no-edit -m 1 HEAD
-      #     git push
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          if ${{ github.event_name }} != 'pull_request'; then
+            git revert --no-edit HEAD
+          else
+            git revert --no-edit -m 1 HEAD
+          fi
+          git push
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v1
         with:

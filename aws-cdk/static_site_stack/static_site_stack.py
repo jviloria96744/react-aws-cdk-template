@@ -10,10 +10,17 @@ from aws_cdk import (
 class StaticSiteStack(core.Stack):
 
     def __init__(self, scope: core.Construct, id: str, environment: str, domain: str, **kwargs) -> None:
+        """
+        StaticSiteStack creates the CloudFormation Stack that creates the resources necessary to host a static web site from an S3 Bucket with a CloudFormation CDN and a custom domain name.  Three separate stacks are created based on the environment variable ('dev', 'stg', 'prod')
+
+        arguments:
+        environment -- Deployment Environment, e.g. one of ('dev', 'stg', 'prod')
+        domain -- custom domain name owned by user, e.g. my-domain.com
+        """
+
         super().__init__(scope, id, **kwargs)
 
-        # I created the certificate before hand and pass it in as a context variable
-        # This can also be created as a separate stack and stored in the parameter store
+        # In the GitHub Actions Workflow, the Certificate is created using the CertificateStack and its arn is set as an environment variable
         self.certificate_arn = self.node.try_get_context("certificate_arn")
 
         bucket = s3.Bucket(self,
@@ -38,8 +45,9 @@ class StaticSiteStack(core.Stack):
             security_policy=cf.SecurityPolicyProtocol.TLS_V1_1_2016
         )
 
-        # config dictionary for CloudFront distributions, no caching takes place in dev
+        # Config dictionary for CloudFront distributions, no caching takes place in dev
         # The assumption is that it will be changed frequently and those changes will be tested
+        # To use alternative sub-domains, change the keys of this dictionary to match the sub-domains used in certificate_stack.py
         cf_behavior_dict = {
             "dev": cf.Behavior(is_default_behavior=True, min_ttl=core.Duration.seconds(0), max_ttl=core.Duration.seconds(0), default_ttl=core.Duration.seconds(0)),
             "stg": cf.Behavior(is_default_behavior=True),

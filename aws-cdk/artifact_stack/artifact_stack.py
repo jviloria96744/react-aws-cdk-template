@@ -7,9 +7,11 @@ from aws_cdk import (
 class ArtifactStack(core.Stack):
 
     def __init__(self, scope: core.Construct, id: str, **kwargs) -> None:
+        """
+        ArtifactStack creates the CloudFormation Stack that creates the Artifact S3 Bucket that stg deployment builds are stored in. Deployments to prod take builds from this bucket        
+        """
         super().__init__(scope, id, **kwargs)
 
-        # This is the bucket that will be used to store the artifacts for stg (and prod) deployments
         artifact_bucket = s3.Bucket(self,
                                     "react-cicd-cdk-artifacts",
                                     removal_policy=core.RemovalPolicy.DESTROY,

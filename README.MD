@@ -1,8 +1,8 @@
 # React/AWS CDK Template
 
-This project is a template used to deploy a static React site to an Amazon S3 Bucket using AWS Cloud Development Kit to multiple environments (dev, stg, and prod).
+This project is a template used to deploy a static React site to an Amazon S3 Bucket.
 
-The GitHub Action Workflow creates the S3 Bucket, CloudFront Distribution, SSL Certificate and will deploy to multiple sub-domains given a custom domain that the user owns.
+The GitHub Actions Workflow is responsible for the CI/CD portion of this project and leverages the AWS Cloud Development Kit to create the S3 Bucket, CloudFront Distribution, SSL Certificate and associated permissions/access policies and will deploy to multiple sub-domains given a custom domain that the user owns.
 
 ## Get Started
 
@@ -39,6 +39,8 @@ AWS Region is the region that all the resources will be deployed to, other than 
 
 Notice that the domain and region aren't necessarily secrets and can be declared as environment variables in your GitHub Actions workflow.
 
+## Directory Structure
+
 ### Front-End React Project
 
 The `frontend` directory is a standard `React` project bootstrapped with [Create React App](https://github.com/facebook/create-react-app). The `README` file in that directory has not been changed from the basic project template and explains the commands available to you. Before being able to use the commands listed, you must install the node dependencies using the following commands,
@@ -50,7 +52,7 @@ npm install
 
 ### AWS CDK Project
 
-The `aws-cdk` directory contains the Cloud Development Kit Project used to create the resources needed for deployment. The CDK template language is in Python. The use of Python was simply a personal choice. Although I have made changes to the base template which I will detail below, I have left the `README` file unchanged from project creation using the `cdk init` command.
+The `aws-cdk` directory contains the Cloud Development Kit Project used to create the resources needed for deployment. The CDK template language is in Python.
 
 There are three CloudFormation stacks that this project creates.
 
@@ -73,7 +75,7 @@ source .env/bin/activate
 pip install -r requirements.txt
 ```
 
-**Note** : AWS CDK `1.62.0` so when testing locally, you may have to update setup.py which lists dependencies and their versions.
+**Note** : This project uses version `1.62.0` of the AWS CDK so when testing locally, you may have to update setup.py which lists dependencies and their versions.
 
 ### GitHub Actions
 

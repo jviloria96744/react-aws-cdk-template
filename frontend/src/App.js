@@ -18,7 +18,6 @@ function App() {
         >
           Learn React
         </a>
-        <div>I am a new line of text</div>
       </header>
     </div>
   );

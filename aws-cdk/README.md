@@ -1,13 +1,12 @@
-
 # Welcome to your CDK Python project!
 
-This is a blank project for Python development with CDK.
+This is a project for Python development with CDK that deploys a static website to AWS. The static files are hosted from an S3 Bucket which sits behind a CloudFront Distribution with an AWS issued Certificate for secure web traffic. The static site has a custom domain with three development environments.
 
 The `cdk.json` file tells the CDK Toolkit how to execute your app.
 
-This project is set up like a standard Python project.  The initialization
+This project is set up like a standard Python project. The initialization
 process also creates a virtualenv within this project, stored under the .env
-directory.  To create the virtualenv it assumes that there is a `python3`
+directory. To create the virtualenv it assumes that there is a `python3`
 (or `python` for Windows) executable in your path with access to the `venv`
 package. If for any reason the automatic creation of the virtualenv fails,
 you can create the virtualenv manually.
@@ -49,10 +48,24 @@ command.
 
 ## Useful commands
 
- * `cdk ls`          list all stacks in the app
- * `cdk synth`       emits the synthesized CloudFormation template
- * `cdk deploy`      deploy this stack to your default AWS account/region
- * `cdk diff`        compare deployed stack with current state
- * `cdk docs`        open CDK documentation
+- `cdk ls` list all stacks in the app
+- `cdk synth` emits the synthesized CloudFormation template
+- `cdk deploy` deploy this stack to your default AWS account/region
+- `cdk diff` compare deployed stack with current state
+- `cdk docs` open CDK documentation
+
+## CloudFormation Stack Description
+
+There are three CloudFormation stacks that this project creates.
+
+- `CertificateStack` : This creates the SSL Certificate in the `us-east-1` region tied to `dev.my-domain.com`, `stg.my-domain.com` and `prod.my-domain.com`
+- `ArtifactStack` : This creates an S3 Bucket used to store deployment artifacts created during `stg` deployments and used during `prod` deployments
+- `StaticSiteStack` : This creates the S3 Bucket used for static site hosting, the CloudFront Distribution that sits in front of it and the Route53 record set that ties the custom domain name to the CloudFront DNS. One stack is created for each development environment.
+
+When deploying the stacks, three context variables must be included,
+
+- `environment` : This is the deployment environment, e.g. `dev`, `stg` and `prod`
+- `domain` : This is the custom domain name, the GitHub Secret, AWS_DOMAIN_NAME
+- `certificate_arn` : This is the ARN (Amazon Resource Number) of the certificate created by the `CertificateStack`
 
 Enjoy!
